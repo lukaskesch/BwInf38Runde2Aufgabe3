@@ -1,0 +1,9 @@
+﻿<Application x:Class="BwInf38Runde2Aufgabe3Neu.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BwInf38Runde2Aufgabe3Neu"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>

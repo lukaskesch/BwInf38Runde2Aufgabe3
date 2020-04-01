@@ -1,0 +1,47 @@
+﻿<Window x:Class="BwInf38Runde2Aufgabe3Neu.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BwInf38Runde2Aufgabe3Neu"
+        mc:Ignorable="d"
+        Title="BwInf 38 Runde 2 Aufgabe 3: Abbiegen?" Height="450" MinHeight="250" Width="800" MinWidth="250" WindowStartupLocation="CenterScreen" WindowState="Normal" SizeChanged="Window_SizeChanged">
+    <Grid>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Canvas Name="CanvasGrid" ClipToBounds="True" Grid.Row="1"/>
+        <Grid Grid.Row="2" Name="GridPathInfo">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width=".5*"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="175"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <TabPanel Grid.Column="0" Background="Green" Margin="5"/>
+            <Label Name="LabelShortestPath" Content="Shortest Path (1 Turns):" Grid.Column="1" />
+            <Label Name="LabelShortestPathLenght" Content="5.82" Grid.Column="2" />
+            <TabPanel Name="TabPanelYellow" Grid.Column="4" Background="Yellow" Margin="5"/>
+            <Label Name="LabelRecommendedPath" Content="" Grid.Column="5" />
+            <Label Name="LabelRecommendedPathLenght" Content="" Grid.Column="6"/>
+            <Label Name="LabelRecommendedPathPercentage" Content="" Grid.Column="7"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Name="ButtonLoad" Content="Load Map" Margin="5 8 25 5" Click="ButtonLoad_Click"/>
+            <Slider Name="SliderPercentage" Margin="10"   Value="0" Maximum="100" Minimum="0" Width="150" SmallChange="1" LargeChange="5" TabIndex="0" ValueChanged="SliderPercentage_ValueChanged"/>
+            <Label Name="LabelPercentage" Content="0%" VerticalAlignment="Center"/>
+            <Button Name="ButtonCalculate" Content="Calculate" Margin="25 8" Click="ButtonCalculate_Click"/>
+            <Label Name="LabelRuntimeDijkstra" Content="" VerticalAlignment="Center"/>
+            <Label Name="LabelRuntimeAlgorithm" Content="" VerticalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Window>
