@@ -18,9 +18,9 @@ namespace BwInf38Runde2Aufgabe3Neu
         {
             //Preparation
             Prepare();
-            Vertex CurrentPoint = Data.ArrayPoints[0];
-            Vertex StartPoint = Data.ArrayPoints[0];
-            Vertex EndPoint = Data.ArrayPoints[1];
+            Vertex CurrentPoint = Data.ArrayVertices[0];
+            Vertex StartPoint = Data.ArrayVertices[0];
+            Vertex EndPoint = Data.ArrayVertices[1];
 
             //Dijkstra
             do
@@ -42,7 +42,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             do
             {
                 IndexNewPoint = ArrayPointInfo[CurrentPoint.ElementNumber].IndexOfPriorPoint;
-                CurrentPoint = Data.ArrayPoints[IndexNewPoint];
+                CurrentPoint = Data.ArrayVertices[IndexNewPoint];
                 ListShortestPath.Add(CurrentPoint);
 
             }
@@ -53,7 +53,7 @@ namespace BwInf38Runde2Aufgabe3Neu
         private static void Prepare()
         {
             //Set Structure
-            ArrayPointInfo = new VertexInfo[Data.ArrayPoints.Length];
+            ArrayPointInfo = new VertexInfo[Data.ArrayVertices.Length];
 
             //Starting point
             ArrayPointInfo[0].IndexOfPriorPoint = -1;
@@ -78,7 +78,7 @@ namespace BwInf38Runde2Aufgabe3Neu
                 IndexNeighboorPoint = CurrentPoint.NeighboorsIndices[i];
 
                 double DistanceOld = ArrayPointInfo[IndexNeighboorPoint].DistanceToStartpoint;
-                double DistanceNew = CurrentPointInfo.DistanceToStartpoint + Data.CalculateLength(CurrentPoint, Data.ArrayPoints[IndexNeighboorPoint]);
+                double DistanceNew = CurrentPointInfo.DistanceToStartpoint + Data.CalculateLength(CurrentPoint, Data.ArrayVertices[IndexNeighboorPoint]);
                 if (DistanceOld > DistanceNew)
                 {
                     ArrayPointInfo[IndexNeighboorPoint].DistanceToStartpoint = DistanceNew;
@@ -99,7 +99,7 @@ namespace BwInf38Runde2Aufgabe3Neu
                     IndexShortestPointToStartpoint = i;
                 }
             }
-            return Data.ArrayPoints[IndexShortestPointToStartpoint];
+            return Data.ArrayVertices[IndexShortestPointToStartpoint];
         }
         public static double GetMinPathLength()
         {

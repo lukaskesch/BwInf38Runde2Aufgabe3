@@ -23,20 +23,20 @@ namespace BwInf38Runde2Aufgabe3Neu
             MaxPathLength = Dijkstra.GetMinPathLength() * (1 + Percent / 100);
             BestPathLength = MaxPathLength;
             MaxTurns = Data.CalculateMaxTurns();
-            StartPoint = Data.ArrayPoints[0];
-            EndPoint = Data.ArrayPoints[1];
+            StartPoint = Data.ArrayVertices[0];
+            EndPoint = Data.ArrayVertices[1];
 
             //Prepare datastructure for recursion
             Vertex NeighboorPoint;
             RecursionVertexInfo PriorPointInfo = new RecursionVertexInfo();
             PriorPointInfo.ListOfPriorPoints = new List<int>();
             PriorPointInfo.ListOfPriorPoints.Add(0);
-            Data.ArrayPoints[0].Visited = true;
+            Data.ArrayVertices[0].Visited = true;
 
             //Start RecursionMethod
             for (int i = 0; i < StartPoint.NeighboorsIndices.Count; i++)
             {
-                NeighboorPoint = Data.ArrayPoints[StartPoint.NeighboorsIndices[i]];
+                NeighboorPoint = Data.ArrayVertices[StartPoint.NeighboorsIndices[i]];
                 PriorPointInfo.Angle = Data.CalculateAngle(StartPoint, NeighboorPoint);
                 RecursionMethod(PriorPointInfo, StartPoint, NeighboorPoint);
             }
@@ -45,7 +45,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             List<Vertex> ListRecommendedPath = new List<Vertex>();
             for (int i = 0; i < RecommendedPathInfo.ListOfPriorPoints.Count; i++)
             {
-                ListRecommendedPath.Add(Data.ArrayPoints[RecommendedPathInfo.ListOfPriorPoints[i]]);
+                ListRecommendedPath.Add(Data.ArrayVertices[RecommendedPathInfo.ListOfPriorPoints[i]]);
             }
             return ListRecommendedPath.ToArray();
         }
@@ -85,13 +85,13 @@ namespace BwInf38Runde2Aufgabe3Neu
             }
 
             //Mark current point as visited
-            Data.ArrayPoints[CurrentPoint.ElementNumber].Visited = true;
+            Data.ArrayVertices[CurrentPoint.ElementNumber].Visited = true;
 
             //Calls itself if unvisited neighboors exist
             for (int i = 0; i < CurrentPoint.NeighboorsIndices.Count; i++)
             {
                 int IndexNeighboor = CurrentPoint.NeighboorsIndices[i];
-                Vertex Neighboor = Data.ArrayPoints[IndexNeighboor];
+                Vertex Neighboor = Data.ArrayVertices[IndexNeighboor];
                 if (!Neighboor.Visited)
                 {
                     RecursionMethod(PriorPointInfo, CurrentPoint, Neighboor);
@@ -100,7 +100,7 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             //Reset referance changes
             PriorPointInfo.ListOfPriorPoints.Remove(CurrentPoint.ElementNumber);
-            Data.ArrayPoints[CurrentPoint.ElementNumber].Visited = false;
+            Data.ArrayVertices[CurrentPoint.ElementNumber].Visited = false;
         }
 
         public static int GetNumberOfTurns()

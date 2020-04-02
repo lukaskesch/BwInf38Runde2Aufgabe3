@@ -12,10 +12,10 @@ namespace BwInf38Runde2Aufgabe3Neu
     class Data
     {
         //Datastructures
-        public static Vertex[] ArrayPoints;
-        public static Edge[] ArrayLines;
-        private static List<Vertex> ListPoints = new List<Vertex>();
-        private static List<Edge> ListLines = new List<Edge>();
+        public static Vertex[] ArrayVertices;
+        public static Edge[] ArrayEdges;
+        private static List<Vertex> ListVertices = new List<Vertex>();
+        private static List<Edge> ListEdges = new List<Edge>();
 
         public static bool NewParameters = false;
         public static bool ReadDataFromFile()
@@ -24,10 +24,10 @@ namespace BwInf38Runde2Aufgabe3Neu
             {
                 //Reset
                 NewParameters = true;
-                ListLines = new List<Edge>();
-                ListPoints = new List<Vertex>();
-                ArrayLines = null;
-                ArrayPoints = null;
+                ListEdges = new List<Edge>();
+                ListVertices = new List<Vertex>();
+                ArrayEdges = null;
+                ArrayVertices = null;
                 Vertex.ResetIndex();
 
                 //FileContent
@@ -70,25 +70,25 @@ namespace BwInf38Runde2Aufgabe3Neu
 
                 //Data Processing
                 string[] InputArray = Regex.Split(FileString, Environment.NewLine);
-                FillLineList(InputArray);
                 FillStartAndEndPoint(InputArray);
-                FillPointList();
-                ArrayPoints = ListPoints.ToArray();
-                ArrayLines = ListLines.ToArray();
+                FillLists(InputArray);
+                ArrayVertices = ListVertices.ToArray();
+                ArrayEdges = ListEdges.ToArray();
                 AddNeighboorPoints();
                 return true;
             }
             catch
             {
                 //throw;
-                ArrayPoints = null;
-                ArrayLines = null;
+                ArrayVertices = null;
+                ArrayEdges = null;
                 return false;
             }
         }
-        private static void FillLineList(string[] InputArray)
+        private static void FillLists(string[] InputArray)
         {
             //Fill all lines in List
+            Vertex vertex1, vertex2;
             int Length = int.Parse(InputArray[0]);
             char[] CharTrim = { ' ', '(', ')' };
             string[] Row;
@@ -102,7 +102,34 @@ namespace BwInf38Runde2Aufgabe3Neu
                 Row[1] = Row[1].Trim(CharTrim);
                 Column2 = Row[1].Split(',');
 
-                ListLines.Add(new Edge(double.Parse(Column1[0]), double.Parse(Column1[1]), double.Parse(Column2[0]), double.Parse(Column2[1])));
+                vertex1 = new Vertex(double.Parse(Column1[0]), double.Parse(Column1[1]), -1);
+                vertex2 = new Vertex(double.Parse(Column2[0]), double.Parse(Column2[1]), -1);
+
+                ListEdges.Add(new Edge(vertex1, vertex2));
+
+                bool CheckVertex1 = false;
+                bool CheckVertex2 = false;
+                foreach (Vertex vertex in ListVertices)
+                {
+                    if (vertex.X == vertex1.X && vertex.Y == vertex1.Y)
+                    {
+                        CheckVertex1 = true;
+                    }
+                    if (vertex.X == vertex2.X && vertex.Y == vertex2.Y)
+                    {
+                        CheckVertex2 = true;
+                    }
+                }
+                if (!CheckVertex1)
+                {
+                    vertex1.ElementNumber = ListVertices.Count;
+                    ListVertices.Add(vertex1);
+                }
+                if (!CheckVertex2)
+                {
+                    vertex2.ElementNumber = ListVertices.Count;
+                    ListVertices.Add(vertex2);
+                }
             }
         }
         private static void FillStartAndEndPoint(string[] InputArray)
@@ -112,54 +139,13 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             InputArray[1] = InputArray[1].Trim(CharTrim);
             string[] Column = InputArray[1].Split(',');
-            ListPoints.Add(new Vertex(int.Parse(Column[0]), int.Parse(Column[1])));
+            ListVertices.Add(new Vertex(double.Parse(Column[0]), double.Parse(Column[1]), 0));
 
             InputArray[2] = InputArray[2].Trim(CharTrim);
             Column = InputArray[2].Split(',');
-            ListPoints.Add(new Vertex(int.Parse(Column[0]), int.Parse(Column[1])));
+            ListVertices.Add(new Vertex(double.Parse(Column[0]), double.Parse(Column[1]), 1));
         }
-        private static void FillPointList()
-        {
-            //Add all points to list
-            Edge line;
-            for (int i = 0; i < ListLines.Count; i++)
-            {
-                line = ListLines[i];
-                AddPoints(line);
-            }
-        }
-        private static void AddPoints(Edge line)
-        {
-            //Adds point to list, if it isn't already in it
-            Vertex point;
-            bool Check = false;
-            for (int i = 0; i < ListPoints.Count; i++)
-            {
-                point = ListPoints[i];
-                if (line.X1 == point.X && line.Y1 == point.Y)
-                {
-                    Check = true;
-                }
-            }
-            if (!Check)
-            {
-                ListPoints.Add(new Vertex(line.X1, line.Y1));
-            }
 
-            Check = false;
-            for (int i = 0; i < ListPoints.Count; i++)
-            {
-                point = ListPoints[i];
-                if (line.X2 == point.X && line.Y2 == point.Y)
-                {
-                    Check = true;
-                }
-            }
-            if (!Check)
-            {
-                ListPoints.Add(new Vertex(line.X2, line.Y2));
-            }
-        }
         private static void AddNeighboorPoints()
         {
             //Adds all neighboor indices to all points
@@ -167,13 +153,13 @@ namespace BwInf38Runde2Aufgabe3Neu
             Vertex point;
             int Index1 = -1;
             int Index2 = -1;
-            for (int i = 0; i < ArrayLines.Length; i++)
+            for (int i = 0; i < ArrayEdges.Length; i++)
             {
-                line = ArrayLines[i];
+                line = ArrayEdges[i];
 
-                for (int j = 0; j < ArrayPoints.Length; j++)
+                for (int j = 0; j < ArrayVertices.Length; j++)
                 {
-                    point = ArrayPoints[j];
+                    point = ArrayVertices[j];
                     if (line.X1 == point.X && line.Y1 == point.Y)
                     {
                         Index1 = j;
@@ -183,8 +169,8 @@ namespace BwInf38Runde2Aufgabe3Neu
                         Index2 = j;
                     }
                 }
-                ArrayPoints[Index1].NeighboorsIndices.Add(Index2);
-                ArrayPoints[Index2].NeighboorsIndices.Add(Index1);
+                ArrayVertices[Index1].NeighboorsIndices.Add(Index2);
+                ArrayVertices[Index2].NeighboorsIndices.Add(Index1);
             }
         }
         public static void FindBoundaries(ref double _MinX, ref double _MaxX, ref double _MinY, ref double _MaxY)
@@ -196,9 +182,9 @@ namespace BwInf38Runde2Aufgabe3Neu
             double MinY = double.MaxValue;
             double MaxY = double.MinValue;
 
-            for (int i = 0; i < ArrayPoints.Length; i++)
+            for (int i = 0; i < ArrayVertices.Length; i++)
             {
-                point = ArrayPoints[i];
+                point = ArrayVertices[i];
 
                 if (point.X < MinX)
                 {

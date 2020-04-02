@@ -30,6 +30,14 @@ namespace BwInf38Runde2Aufgabe3Neu
             NeighboorsIndices = new List<int>();
             Visited = false;
         }
+        public Vertex(double _X, double _Y, int _ElementNumber)
+        {
+            X = _X;
+            Y = _Y;
+            ElementNumber = _ElementNumber;
+            NeighboorsIndices = new List<int>();
+            Visited = false;
+        }
 
         //Override comparison operators
         public static bool operator ==(Vertex P1, Vertex P2)

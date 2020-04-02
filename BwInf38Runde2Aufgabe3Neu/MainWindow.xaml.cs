@@ -141,7 +141,7 @@ namespace BwInf38Runde2Aufgabe3Neu
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //Draw new scaled map
-            if (Data.ArrayLines != null)
+            if (Data.ArrayEdges != null)
             {
                 Draw();
             }
@@ -215,9 +215,9 @@ namespace BwInf38Runde2Aufgabe3Neu
             Brush brush = Brushes.Gray;
             int StrokeThicknes = 2;
 
-            for (int i = 0; i < Data.ArrayLines.Length; i++)
+            for (int i = 0; i < Data.ArrayEdges.Length; i++)
             {
-                DrawLine(Data.ArrayLines[i], brush, StrokeThicknes);
+                DrawLine(Data.ArrayEdges[i], brush, StrokeThicknes);
             }
         }
         private void DrawLine(Edge tline, Brush brush, int StrokeThicknes)
@@ -240,11 +240,11 @@ namespace BwInf38Runde2Aufgabe3Neu
         private void DrawAllPoints()
         {
             //Draw all points
-            DrawPoint(Data.ArrayPoints[0], Brushes.Green);
-            DrawPoint(Data.ArrayPoints[1], Brushes.Red);
-            for (int i = 2; i < Data.ArrayPoints.Length; i++)
+            DrawPoint(Data.ArrayVertices[0], Brushes.Green);
+            DrawPoint(Data.ArrayVertices[1], Brushes.Red);
+            for (int i = 2; i < Data.ArrayVertices.Length; i++)
             {
-                DrawPoint(Data.ArrayPoints[i], Brushes.Gray);
+                DrawPoint(Data.ArrayVertices[i], Brushes.Gray);
             }
         }
         private void DrawPoint(Vertex tpoint, Brush brush)
