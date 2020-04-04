@@ -110,7 +110,9 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             //Get recommended path
             stopwatch.Restart();
-            RecommendedPath = Recursion.FindRecommendedPath(SliderPercentage.Value);
+            int percent = (int)SliderPercentage.Value;
+            RecommendedPath = Recursion.FindRecommendedPath(percent);
+            //RecommendedPath = Recursion.FindRecommendedPath(SliderPercentage.Value);
             stopwatch.Stop();
             TimeAlgorithm = stopwatch.ElapsedMilliseconds;
 
