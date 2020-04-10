@@ -83,7 +83,7 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             //Get shortest path
             stopwatch.Restart();
-            ShortestPath = Recursion.FindRecommendedPath(0.1);
+            ShortestPath = Recursion.FindRecommendedPath(0);
             stopwatch.Stop();
             TimeAlgorithm = stopwatch.ElapsedMilliseconds;
 

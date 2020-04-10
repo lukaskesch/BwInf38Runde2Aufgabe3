@@ -9,6 +9,8 @@ namespace BwInf38Runde2Aufgabe3Neu
 {
     class Recursion
     {
+        private static double Epsilon = Math.Pow(10.0, -12.0);
+
         private static int MaxTurns;
         private static double MaxPathLength;
         private static double BestPathLength;
@@ -21,7 +23,7 @@ namespace BwInf38Runde2Aufgabe3Neu
         {
             //Set boundaries
             MaxPathLength = Dijkstra.GetMinPathLength() * (1 + Percent / 100);
-            BestPathLength = MaxPathLength;
+            BestPathLength = MaxPathLength * (1 + Epsilon);
             MaxTurns = Data.CalculateMaxTurns();
             StartPoint = Data.ArrayVertices[0];
             EndPoint = Data.ArrayVertices[1];
@@ -58,14 +60,14 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             //Check new distance
             Distance += Data.CalculateLength(PriorPoint, CurrentPoint);
-            if (Distance > MaxPathLength)
+            if (Distance - MaxPathLength > Epsilon)
             {
                 return;
             }
 
             //Check angle and may adjust turns
             double AngleNew = Data.CalculateAngle(PriorPoint, CurrentPoint);
-            if (AngleNew != AngleOld && ++Turns > MaxTurns)
+            if (Math.Abs(AngleNew - AngleOld) > Epsilon && ++Turns > MaxTurns)
             {
                 return;
             }

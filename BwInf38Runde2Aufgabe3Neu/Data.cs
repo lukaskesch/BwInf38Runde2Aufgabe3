@@ -229,6 +229,12 @@ namespace BwInf38Runde2Aufgabe3Neu
                 angle = 90;
             }
 
+            //double angle = Math.Atan2(dy, dx) * 360 / (2 * Math.PI);
+            //if (angle == -90)
+            //{
+            //    angle = 90;
+            //}
+
             return angle;
         }
         public static int CalculateMaxTurns()
