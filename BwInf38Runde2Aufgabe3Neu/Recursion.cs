@@ -9,6 +9,8 @@ namespace BwInf38Runde2Aufgabe3Neu
 {
     class Recursion
     {
+        private static int[] Statistics;
+
         private static double Epsilon = Math.Pow(10.0, -12.0);
 
         private static int MaxTurns;
@@ -34,13 +36,15 @@ namespace BwInf38Runde2Aufgabe3Neu
             PriorPointInfo.ListOfPriorPoints = new List<int>();
             PriorPointInfo.ListOfPriorPoints.Add(0);
             Data.ArrayVertices[0].Visited = true;
+            Statistics = new int[50];
 
             //Start RecursionMethod
             for (int i = 0; i < StartPoint.NeighboorsIndices.Count; i++)
             {
+                Statistics[0]++;
                 NeighboorPoint = Data.ArrayVertices[StartPoint.NeighboorsIndices[i]];
                 PriorPointInfo.Angle = Data.CalculateAngle(StartPoint, NeighboorPoint);
-                RecursionMethod(PriorPointInfo, StartPoint, NeighboorPoint);
+                RecursionMethod(PriorPointInfo, StartPoint, NeighboorPoint, 1);
             }
 
             //Create recommended path
@@ -51,7 +55,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             }
             return ListRecommendedPath.ToArray();
         }
-        private static void RecursionMethod(RecursionVertexInfo PriorPointInfo, Vertex PriorPoint, Vertex CurrentPoint)
+        private static void RecursionMethod(RecursionVertexInfo PriorPointInfo, Vertex PriorPoint, Vertex CurrentPoint, int Depth)
         {
             //Get data from PriorPoint
             int Turns = PriorPointInfo.Turns;
@@ -79,12 +83,16 @@ namespace BwInf38Runde2Aufgabe3Neu
             PriorPointInfo.Angle = AngleNew;
 
             //May update recommended path
-            if ((CurrentPoint == EndPoint) && (Turns < MaxTurns || (Turns == MaxTurns && Distance < BestPathLength)))
+            if (Distance < MaxPathLength)
             {
-                MaxTurns = Turns;
-                BestPathLength = Distance;
-                RecommendedPathInfo = new RecursionVertexInfo(PriorPointInfo);
+                if ((CurrentPoint == EndPoint) && (Turns < MaxTurns || (Turns == MaxTurns && Distance < BestPathLength)))
+                {
+                    MaxTurns = Turns;
+                    BestPathLength = Distance;
+                    RecommendedPathInfo = new RecursionVertexInfo(PriorPointInfo);
+                }
             }
+
 
             //Mark current point as visited
             Data.ArrayVertices[CurrentPoint.ElementNumber].Visited = true;
@@ -96,7 +104,9 @@ namespace BwInf38Runde2Aufgabe3Neu
                 Vertex Neighboor = Data.ArrayVertices[IndexNeighboor];
                 if (!Neighboor.Visited)
                 {
-                    RecursionMethod(PriorPointInfo, CurrentPoint, Neighboor);
+                    Statistics[Depth]++;
+                    RecursionMethod(PriorPointInfo, CurrentPoint, Neighboor, ++Depth);
+                    Depth--;
                 }
             }
 
