@@ -36,7 +36,8 @@
             <Label Name="LabelRecommendedPathPercentage" Content="" Grid.Column="7"/>
         </Grid>
         <StackPanel Orientation="Horizontal">
-            <Button Name="ButtonLoad" Content="Load Map" Margin="5 8 25 5" Click="ButtonLoad_Click"/>
+            <Button Name="ButtonLoad" Content="Load Map" Margin="5 8 5 5" Click="ButtonLoad_Click"/>
+            <Button Name="ButtonCreate" Content="Create Map" Margin="5 8 25 5" Click="ButtonCreate_Click"/>
             <Slider Name="SliderPercentage" Margin="10"   Value="0" Maximum="100" Minimum="0" Width="150" SmallChange="1" LargeChange="5" TabIndex="0" ValueChanged="SliderPercentage_ValueChanged" IsSnapToTickEnabled="True" />
             <Label Name="LabelPercentage" Content="0%" VerticalAlignment="Center"/>
             <Button Name="ButtonCalculate" Content="Calculate" Margin="25 8" Click="ButtonCalculate_Click"/>

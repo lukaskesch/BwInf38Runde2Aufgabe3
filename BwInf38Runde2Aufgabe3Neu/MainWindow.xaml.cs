@@ -196,6 +196,7 @@ namespace BwInf38Runde2Aufgabe3Neu
                 DrawLine(new Edge(ShortestPath[i], ShortestPath[i + 1]), brush, StrockeThickness);
             }
         }
+
         private void DrawRecommendedPath()
         {
             //Draw recommended path
@@ -229,13 +230,21 @@ namespace BwInf38Runde2Aufgabe3Neu
             point1 = PlotToCanvas(new Point(tline.X1, tline.Y1));
             point2 = PlotToCanvas(new Point(tline.X2, tline.Y2));
 
-            Line line = new Line();
-            line.X1 = point1.X;
-            line.Y1 = point1.Y;
-            line.X2 = point2.X;
-            line.Y2 = point2.Y;
-            line.Stroke = brush;
-            line.StrokeThickness = StrokeThicknes;
+            Line line = new Line()
+            {
+                X1 = point1.X,
+                Y1 = point1.Y,
+                X2 = point2.X,
+                Y2 = point2.Y,
+                Stroke = brush,
+                StrokeThickness = StrokeThicknes
+            };
+            //line.X1 = point1.X;
+            //line.Y1 = point1.Y;
+            //line.X2 = point2.X;
+            //line.Y2 = point2.Y;
+            //line.Stroke = brush;
+            //line.StrokeThickness = StrokeThicknes;
 
             CanvasGrid.Children.Add(line);
         }
@@ -263,5 +272,15 @@ namespace BwInf38Runde2Aufgabe3Neu
             Canvas.SetLeft(ellipse, point.X - PointRadius * 0.5);
             Canvas.SetTop(ellipse, point.Y - PointRadius * 0.5);
         }
+
+
+
+        private void ButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            CreatMapWindow Window = new CreatMapWindow();
+            Window.ShowDialog();
+
+        }
+
     }
 }

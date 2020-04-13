@@ -18,6 +18,7 @@ namespace BwInf38Runde2Aufgabe3Neu
         private static List<Edge> ListEdges = new List<Edge>();
 
         public static bool NewParameters = false;
+        public static string FileName;
         public static bool ReadDataFromFile()
         {
             try
@@ -47,6 +48,9 @@ namespace BwInf38Runde2Aufgabe3Neu
                 {
                     throw new ArgumentNullException();
                 }
+
+                //FileName = Dlg.FileName;
+                FileName = Dlg.SafeFileName;
 
                 //Set Streams
                 FileStream File = new FileStream(Dlg.FileName, FileMode.Open, FileAccess.Read);
@@ -228,12 +232,6 @@ namespace BwInf38Runde2Aufgabe3Neu
             {
                 angle = 90;
             }
-
-            //double angle = Math.Atan2(dy, dx) * 360 / (2 * Math.PI);
-            //if (angle == -90)
-            //{
-            //    angle = 90;
-            //}
 
             return angle;
         }

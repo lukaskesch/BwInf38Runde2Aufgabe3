@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +11,9 @@ namespace BwInf38Runde2Aufgabe3Neu
 {
     class Recursion
     {
-        private static int[] Statistics;
+        private static long[] Statistics;
+        private static double StatisticsPercent;
+        private static Stopwatch stopwatch = new Stopwatch();
 
         private static double Epsilon = Math.Pow(10.0, -12.0);
 
@@ -23,12 +27,15 @@ namespace BwInf38Runde2Aufgabe3Neu
 
         public static Vertex[] FindRecommendedPath(double Percent)
         {
+            stopwatch.Restart();
+
             //Set boundaries
             MaxPathLength = Dijkstra.GetMinPathLength() * (1 + Percent / 100);
             BestPathLength = MaxPathLength * (1 + Epsilon);
             MaxTurns = Data.CalculateMaxTurns();
             StartPoint = Data.ArrayVertices[0];
             EndPoint = Data.ArrayVertices[1];
+            StatisticsPercent = Percent;
 
             //Prepare datastructure for recursion
             Vertex NeighboorPoint;
@@ -36,7 +43,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             PriorPointInfo.ListOfPriorPoints = new List<int>();
             PriorPointInfo.ListOfPriorPoints.Add(0);
             Data.ArrayVertices[0].Visited = true;
-            Statistics = new int[50];
+            Statistics = new long[150];
 
             //Start RecursionMethod
             for (int i = 0; i < StartPoint.NeighboorsIndices.Count; i++)
@@ -46,6 +53,9 @@ namespace BwInf38Runde2Aufgabe3Neu
                 PriorPointInfo.Angle = Data.CalculateAngle(StartPoint, NeighboorPoint);
                 RecursionMethod(PriorPointInfo, StartPoint, NeighboorPoint, 1);
             }
+
+            stopwatch.Stop();
+            SaveStatistics();
 
             //Create recommended path
             List<Vertex> ListRecommendedPath = new List<Vertex>();
@@ -57,6 +67,11 @@ namespace BwInf38Runde2Aufgabe3Neu
         }
         private static void RecursionMethod(RecursionVertexInfo PriorPointInfo, Vertex PriorPoint, Vertex CurrentPoint, int Depth)
         {
+            if (Depth >= 20)
+            {
+                return;
+            }
+
             //Get data from PriorPoint
             int Turns = PriorPointInfo.Turns;
             double Distance = PriorPointInfo.Distance;
@@ -64,13 +79,17 @@ namespace BwInf38Runde2Aufgabe3Neu
 
             //Check new distance
             Distance += Data.CalculateLength(PriorPoint, CurrentPoint);
-            if (Distance - MaxPathLength > Epsilon)
+            if (Distance > MaxPathLength)
             {
                 return;
             }
 
             //Check angle and may adjust turns
             double AngleNew = Data.CalculateAngle(PriorPoint, CurrentPoint);
+            //if (AngleNew != AngleOld)
+            //{
+            //    Turns++;
+            //}
             if (Math.Abs(AngleNew - AngleOld) > Epsilon && ++Turns > MaxTurns)
             {
                 return;
@@ -83,7 +102,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             PriorPointInfo.Angle = AngleNew;
 
             //May update recommended path
-            if (Distance < MaxPathLength)
+            if (Distance < MaxPathLength * (1 + Epsilon))
             {
                 if ((CurrentPoint == EndPoint) && (Turns < MaxTurns || (Turns == MaxTurns && Distance < BestPathLength)))
                 {
@@ -122,6 +141,45 @@ namespace BwInf38Runde2Aufgabe3Neu
         public static double GetPathLength()
         {
             return Math.Round(BestPathLength * 1000) / 1000;
+        }
+        private static void SaveStatistics()
+        {
+            string FileString = GetStatisticsString();
+            StreamWriter WriterStatistics = File.AppendText("Statistics.csf");
+            try
+            {
+                WriterStatistics.WriteLine(FileString);
+            }
+            finally
+            {
+                WriterStatistics.Close();
+            }
+        }
+        private static string GetStatisticsString()
+        {
+            string S = string.Empty;
+
+            //Filename
+            //string[] FileDirecories = Data.FileName.Split('\\');
+            //S += FileDirecories[FileDirecories.Length - 1] + ",";
+
+            S += Data.FileName + ",";
+            S += StatisticsPercent.ToString() + ",";
+            S += stopwatch.ElapsedMilliseconds.ToString() + ",";
+
+            for (int i = 0; i < Statistics.Length - 1; i++)
+            {
+                S += Statistics[i].ToString();
+                if (Statistics[i + 1] != 0)
+                {
+                    S += ",";
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return S;
         }
     }
 }

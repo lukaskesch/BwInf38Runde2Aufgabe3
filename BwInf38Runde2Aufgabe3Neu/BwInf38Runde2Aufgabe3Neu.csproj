@@ -98,5 +98,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CreateMapModul\CreateMapModul.csproj">
+      <Project>{c561ce05-e9b2-41ba-b6be-c523e2ed061a}</Project>
+      <Name>CreateMapModul</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

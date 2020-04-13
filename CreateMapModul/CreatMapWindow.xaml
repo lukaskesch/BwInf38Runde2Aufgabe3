@@ -1,0 +1,50 @@
+﻿<Window x:Class="BwInf38Runde2Aufgabe3Neu.CreatMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BwInf38Runde2Aufgabe3Neu"
+        mc:Ignorable="d"
+        Title="CreatMapWindow" Height="450" Width="900" WindowStartupLocation="CenterOwner" WindowState="Maximized" ResizeMode="NoResize" MouseLeftButtonDown="CanvasMap_MouseLeftButtonDown" MouseLeftButtonUp="CanvasMap_MouseLeftButtonUp" MouseMove="Window_MouseMove">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="MaxX:"/>
+                    <TextBox Name="TextBoxMaxX" Width="50" Text="15" />
+                    <Label Content="MaxY:"/>
+                    <TextBox Name="TextBoxMaxY" Width="50" Text="10" />
+                    <Button Name="SetScale" Content="Set Scale" Click="SetScale_Click"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Current Position:"/>
+                    <Label Name="LabelCurrentPosition"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="ButtonStartpoint" Content="Startpoint" Click="ButtonStartpoint_Click"/>
+                    <Button Name="ButtonEndpoint" Content="Endpoint" Click="ButtonEndpoint_Click"/>
+                    <Button Name="ButtonNewLine" Content="New Line" Click="NewLine_Click"/>
+                    <Button Name="DeleteLine" Content="Delete Line" Click="DeleteLine_Click"/>
+                    <Button Name="SaveMap" Content="Save Map" Click="SaveMap_Click"/>
+                    <Button Name="Close" Content="Close" Click="Close_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Name="GridCanvas">
+            <Canvas Name="CanvasMap" ClipToBounds="True" MouseLeftButtonDown="CanvasMap_MouseLeftButtonDown" MouseLeftButtonUp="CanvasMap_MouseLeftButtonUp"/>
+        </Grid>
+    </Grid>
+</Window>
