@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,6 +65,44 @@ namespace BwInf38Runde2Aufgabe3Neu
         private void SaveMap_Click(object sender, RoutedEventArgs e)
         {
             string s = string.Empty;
+
+            s += LineList.Count.ToString() + Environment.NewLine;
+            s += "(" + Startpoint.X.ToString() + "," + Startpoint.Y.ToString() + ")" + Environment.NewLine;
+            s += "(" + Endpoint.X.ToString() + "," + Endpoint.Y.ToString() + ")";
+
+            foreach (Line line in LineList)
+            {
+                s += Environment.NewLine;
+                s += "(" + line.X1.ToString() + "," + line.Y1.ToString() + ") ";
+                s += "(" + line.X2.ToString() + "," + line.Y2.ToString() + ")";
+            }
+
+            //System.Windows.MessageBox.Show(s);
+
+            SaveFileDialog Dlg = new SaveFileDialog();
+            Dlg.Title = "Save Map";
+            Dlg.DefaultExt = ".txt";
+            Dlg.Filter = "Text documents (.txt)|*.txt";
+            Dlg.FileName = "Beispiel.txt";
+            Dlg.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Material";
+
+            Nullable<bool> result = Dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                StreamWriter streamWriter = new StreamWriter(Dlg.FileName, false);
+                try
+                {
+                    streamWriter.Write(s);
+                }
+                finally
+                {
+                    streamWriter.Close();
+                }
+                //StreamWriter streamWriter = File.Create(Dlg.FileName);
+            }
+
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -124,6 +164,9 @@ namespace BwInf38Runde2Aufgabe3Neu
             Canvas.SetLeft(ellipse, P.X - radius);
             Canvas.SetTop(ellipse, P.Y - radius);
         }
+
+
+
         private void DrawCoordinateSystem()
         {
             double Opacity = 0.5;
@@ -170,7 +213,7 @@ namespace BwInf38Runde2Aufgabe3Neu
 
 
 
-        private void Window_MouseMove(object sender, MouseEventArgs e)
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             //Check if mouse position is in bound
             Point point = Mouse.GetPosition(GridCanvas);
@@ -218,7 +261,7 @@ namespace BwInf38Runde2Aufgabe3Neu
             if ((point.X > MaxX || point.Y > MaxY || point.X < 0 || point.Y < 0) && (BoolNewLine || BoolDeleteLine || BoolStartpoint || BoolEndpoint))
             {
                 LabelCurrentPosition.Content = "out of bounds";
-                MessageBox.Show("Point is out of bounds. Start over");
+                System.Windows.MessageBox.Show("Point is out of bounds. Start over");
                 BoolStartpoint = false;
                 BoolEndpoint = false;
                 BoolNewLine = false;
@@ -232,7 +275,7 @@ namespace BwInf38Runde2Aufgabe3Neu
                 {
                     BoolDeleteLine = false;
                     BoolNewLine = false;
-                    MessageBox.Show("Invalid point");
+                    System.Windows.MessageBox.Show("Invalid point");
                     return;
                 }
                 Point2 = point;
@@ -256,28 +299,68 @@ namespace BwInf38Runde2Aufgabe3Neu
                     Opacity = 0.8
                 };
                 //Check if Line already exist
-                if (LineList.Contains(line))
+                if (BoolDeleteLine)
                 {
-                    if (BoolDeleteLine)
+                    foreach (Line l in LineList)
                     {
-                        BoolDeleteLine = false;
+                        bool Check1 = line.X1 == l.X1 && line.Y1 == l.Y1 && line.X2 == l.X2 && line.Y2 == l.Y2;
+                        bool Check2 = line.X1 == l.X2 && line.Y1 == l.Y2 && line.X2 == l.X1 && line.Y2 == l.Y1;
+
+                        if (Check1 || Check2)
+                        {
+                            MessageBox.Show("Line dot");
+                            LineList.Remove(l);
+                            break;
+                        }
+                    }
+                    bool BoolP1 = false;
+                    bool BoolP2 = false;
+                    for (int i = 0; i < CanvasMap.Children.Count; i++)
+                    {
+                        var Var = CanvasMap.Children[i];
+                        Line l;
+                        Ellipse E = new Ellipse();
+                        if (Var.GetType() == line.GetType())
+                        {
+                            l = (Line)Var;
+                            Point p1 = PlotPointToCoordinateSystem(new Point(l.X1, l.Y1));
+                            Point p2 = PlotPointToCoordinateSystem(new Point(l.X2, l.Y2));
+                            bool Check1 = line.X1 == p1.X && line.Y1 == p1.Y && line.X2 == p2.X && line.Y2 == p2.Y;
+                            bool Check2 = line.X1 == p2.X && line.Y1 == p2.Y && line.X2 == p1.X && line.Y2 == p1.Y;
+
+                            if (Check1 || Check2)
+                            {
+                                MessageBox.Show("Line Canvas dot");
+                                CanvasMap.Children.RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else if (Var.GetType() == E.GetType())
+                        {
+
+                        }
+                    }
+                    CanvasMap.Children.Remove(LineCanvas);
+                    BoolDeleteLine = false;
+                    try
+                    {
                         LineList.Remove(line);
-                        CanvasMap.Children.Remove(LineCanvas);
+
                         return;
                     }
-                    else
+                    catch (Exception)
                     {
-                        BoolNewLine = false;
-                        MessageBox.Show("Line already exist");
                         return;
+                        //throw;
                     }
+
                 }
                 else
                 {
                     if (BoolDeleteLine)
                     {
                         BoolDeleteLine = false;
-                        MessageBox.Show("Line doesn't exist");
+                        System.Windows.MessageBox.Show("Line doesn't exist");
                     }
                     else
                     {
@@ -297,7 +380,7 @@ namespace BwInf38Runde2Aufgabe3Neu
 
                 if (Endpoint == Startpoint)
                 {
-                    MessageBox.Show("Start- and Endpoint can't be the same");
+                    System.Windows.MessageBox.Show("Start- and Endpoint can't be the same");
                     return;
                 }
 
@@ -323,7 +406,7 @@ namespace BwInf38Runde2Aufgabe3Neu
 
                 if (Endpoint == Startpoint)
                 {
-                    MessageBox.Show("Start- and Endpoint can't be the same");
+                    System.Windows.MessageBox.Show("Start- and Endpoint can't be the same");
                     return;
                 }
 
@@ -341,7 +424,10 @@ namespace BwInf38Runde2Aufgabe3Neu
                 Canvas.SetTop(EllipseEndpoint, point.Y - radius);
             }
         }
-
+        private void Window_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            NewLine_Click(null, null);
+        }
 
 
     }

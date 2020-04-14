@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BwInf38Runde2Aufgabe3Neu"
         mc:Ignorable="d"
-        Title="CreatMapWindow" Height="450" Width="900" WindowStartupLocation="CenterOwner" WindowState="Maximized" ResizeMode="NoResize" MouseLeftButtonDown="CanvasMap_MouseLeftButtonDown" MouseLeftButtonUp="CanvasMap_MouseLeftButtonUp" MouseMove="Window_MouseMove">
+        Title="CreatMapWindow" Height="450" Width="900" WindowStartupLocation="CenterOwner" WindowState="Maximized" ResizeMode="NoResize" MouseLeftButtonDown="CanvasMap_MouseLeftButtonDown" MouseLeftButtonUp="CanvasMap_MouseLeftButtonUp" MouseMove="Window_MouseMove" MouseRightButtonUp="Window_MouseRightButtonUp">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>

@@ -74,29 +74,38 @@ namespace BwInf38Runde2Aufgabe3Neu
                 return;
             }
 
-            //Find shortest path length
-            stopwatch.Restart();
-            Dijkstra.FindShortestPathLength();
-            stopwatch.Stop();
-            TimeDijkstra = stopwatch.ElapsedMilliseconds;
+            try
+            {
+                //Find shortest path length
+                stopwatch.Restart();
+                Dijkstra.FindShortestPathLength();
+                stopwatch.Stop();
+                TimeDijkstra = stopwatch.ElapsedMilliseconds;
 
 
-            //Get shortest path
-            stopwatch.Restart();
-            ShortestPath = Recursion.FindRecommendedPath(0);
-            stopwatch.Stop();
-            TimeAlgorithm = stopwatch.ElapsedMilliseconds;
+                //Get shortest path
+                stopwatch.Restart();
+                ShortestPath = Recursion.FindRecommendedPath(0);
+                stopwatch.Stop();
+                TimeAlgorithm = stopwatch.ElapsedMilliseconds;
 
-            //Change UI
-            LabelRuntimeDijkstra.Content = "Dijkstra: " + TimeDijkstra.ToString() + " ms";
-            LabelRuntimeAlgorithm.Content = "Algorithm: " + TimeAlgorithm.ToString() + " ms";
-            LabelShortestPath.Content = "Shortest Path (" + Recursion.GetNumberOfTurns().ToString() + " Turns):";
-            LabelShortestPathLenght.Content = Recursion.GetPathLength().ToString();
-            Draw();
-            GridPathInfo.Visibility = Visibility.Visible;
-            SliderPercentage.Visibility = Visibility.Visible;
-            LabelPercentage.Visibility = Visibility.Visible;
-            ButtonCalculate.Visibility = Visibility.Visible;
+                //Change UI
+                LabelRuntimeDijkstra.Content = "Dijkstra: " + TimeDijkstra.ToString() + " ms";
+                LabelRuntimeAlgorithm.Content = "Algorithm: " + TimeAlgorithm.ToString() + " ms";
+                LabelShortestPath.Content = "Shortest Path (" + Recursion.GetNumberOfTurns().ToString() + " Turns):";
+                LabelShortestPathLenght.Content = Recursion.GetPathLength().ToString();
+                Draw();
+                GridPathInfo.Visibility = Visibility.Visible;
+                SliderPercentage.Visibility = Visibility.Visible;
+                LabelPercentage.Visibility = Visibility.Visible;
+                ButtonCalculate.Visibility = Visibility.Visible;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Graph is not complete");
+                //throw;
+            }
+
         }
 
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
