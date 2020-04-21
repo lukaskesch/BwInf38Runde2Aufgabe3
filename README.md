@@ -22,7 +22,11 @@ der kürzeste Weg. Bei schlechtem Wetter fährt Bilal also nun den rot-grünen W
 einmal weniger abbiegen muss als auf dem blauen Weg.
 
 
+![Image description](https://github.com/lukaskesch/BwInf38Runde2Aufgabe3/blob/master/Beispielkarte.PNG)
+
+
 Aufgabe:
+
 Hilf Bilal und schreibe ein Programm, das eine Straßenkarte mit Start- und Zielpunkt einliest
 und ihm einen Weg vorschlägt. Damit das Programm bei jedem Wetter nutzbar ist, soll der
 Benutzer die maximale Verlängerung in Prozent eingeben können.
